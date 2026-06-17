@@ -36,3 +36,4 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 lệnh vào database:npm run db:studio
+postgresql://neondb_owner:npg_P5ZuHA3RlEyr@ep-mute-cake-ahlw2dgh.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require
