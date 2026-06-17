@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  password  String
+  role      String    @default("user")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  orders    Order[]
+  reviews   Review[]
+  vouchers  VoucherUsage[]  // ← THÊM
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  icon      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  image       String
+  category    String
+  stock       Int         @default(0)
+  rating      Float       @default(0)
+  reviewCount Int         @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  reviewList  Review[]
+
+  @@index([category])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  userName        String
+  items           OrderItem[]
+  total           Float
+  discount        Float       @default(0)  // ← THÊM: số tiền giảm
+  voucherCode     String?     // ← THÊM: mã voucher đã dùng
+  finalTotal      Float       // ← THÊM: tổng sau giảm
+  status          String      @default("pending")
+  paymentMethod   String
+  fullName        String
+  phone           String
+  address         String
+  city            String
+  district        String
+  ward            String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([voucherCode])  // ← THÊM
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String
+  name      String
+  price     Float
+  image     String
+  quantity  Int
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  userName  String
+  productId String
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([userId])
+}
+
+// =================== VOUCHER (MỚI) ===================
+model Voucher {
+  id              String      @id @default(cuid())
+  code            String      @unique  // Mã code (VD: "SALE50", "FREESHIP")
+  description     String                // Mô tả (VD: "Giảm 50% cho đơn từ 1 triệu")
+  discountType    String                // "percent" hoặc "fixed"
+  discountValue   Float                 // Giá trị giảm (% hoặc VND)
+  minOrderValue   Float       @default(0)  // Giá trị đơn tối thiểu
+  maxDiscount     Float?                // Giảm tối đa (cho %)
+  usageLimit      Int         @default(0)  // Tổng số lần dùng (0 = không giới hạn)
+  usageCount      Int         @default(0)  // Số lần đã dùng
+  userLimit       Int         @default(1)  // Mỗi user dùng tối đa
+  startDate       DateTime    @default(now())
+  endDate         DateTime
+  isActive        Boolean     @default(true)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  usages          VoucherUsage[]
+
+  @@index([code])
+  @@index([isActive])
+}
+
+// =================== VOUCHER USAGE (MỚI) ===================
+model VoucherUsage {
+  id        String   @id @default(cuid())
+  voucherId String
+  userId    String
+  orderId   String
+  discount  Float
+  createdAt DateTime @default(now())
+
+  voucher   Voucher  @relation(fields: [voucherId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([voucherId])
+  @@index([userId])
+  @@index([orderId])
+}
