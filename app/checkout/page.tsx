@@ -13,7 +13,7 @@ export default function CheckoutPage() {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<any>(null);
 
-    // ĐÃ ĐƯA VÀO TRONG COMPONENT: Các state liên quan tới Voucher
+
     const [voucherCode, setVoucherCode] = useState('');
     const [voucherDiscount, setVoucherDiscount] = useState(0);
     const [voucherMessage, setVoucherMessage] = useState('');
@@ -29,7 +29,7 @@ export default function CheckoutPage() {
     });
 
     useEffect(() => {
-        // Check user
+
         const userStr = localStorage.getItem('user');
         if (!userStr) {
             alert('Vui lòng đăng nhập để thanh toán');
@@ -47,7 +47,7 @@ export default function CheckoutPage() {
         }
     }, [user, items, router]);
 
-    // ĐÃ ĐƯA VÀO TRONG COMPONENT: Hàm áp dụng mã giảm giá
+
     const applyVoucher = async () => {
         if (!voucherCode) return;
         setLoading(true);
@@ -63,7 +63,7 @@ export default function CheckoutPage() {
             const data = await res.json();
             if (data.success) {
                 setVoucherDiscount(data.discount);
-                setVoucherMessage(`✅ Áp dụng thành công! Giảm ${data.discount.toLocaleString('vi-VN')}đ`);
+                setVoucherMessage(` Áp dụng thành công! Giảm ${data.discount.toLocaleString('vi-VN')}đ`);
             } else {
                 setVoucherDiscount(0);
                 setVoucherMessage('❌ ' + data.error);
@@ -83,7 +83,7 @@ export default function CheckoutPage() {
         }
         setLoading(true);
 
-        try { // ĐÃ SỬA: Thêm dấu mở ngoặc '{' cho block try bị thiếu ở đây
+        try {
             const res = await fetch('/api/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

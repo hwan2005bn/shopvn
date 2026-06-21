@@ -7,11 +7,9 @@ export default async function AdminDashboard() {
     const user = await getCurrentUser();
     if (!user || user.role !== 'admin') redirect('/login');
 
-    // SỬA TẠI ĐÂY: Thêm await để đợi lấy mảng dữ liệu thật từ PostgreSQL về
     const products = await db.getAllProducts();
     const orders = await db.getAllOrders();
 
-    // Giờ đây 'orders' đã là Array chuẩn, hàm tính doanh thu sẽ chạy mượt mà
     const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
 
     return (
@@ -52,7 +50,7 @@ export default async function AdminDashboard() {
                     <div className="flex justify-between items-center">
                         <div>
                             <p className="text-gray-500 text-sm">Users</p>
-                            {/* Bạn có thể để cứng là 2 hoặc sau này viết thêm hàm db.getAllUsers() để đếm thật nhé */}
+                            { }
                             <p className="text-2xl font-bold">2</p>
                         </div>
                         <Users className="w-10 h-10 text-purple-500" />

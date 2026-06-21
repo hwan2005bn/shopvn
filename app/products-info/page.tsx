@@ -21,9 +21,9 @@ export default function ProductsInfoPage() {
                 ))}
             </div>
             <h2 className="text-2xl font-bold mt-6 mb-3">Cam kết</h2>
-            <p>✅ 100% hàng chính hãng - Hoàn tiền 200% nếu phát hiện hàng giả</p>
-            <p>✅ Bảo hành chính hãng từ 12-24 tháng</p>
-            <p>✅ Đổi trả miễn phí trong 30 ngày</p>
+            <p> 100% hàng chính hãng - Hoàn tiền 200% nếu phát hiện hàng giả</p>
+            <p> Bảo hành chính hãng từ 12-24 tháng</p>
+            <p> Đổi trả miễn phí trong 30 ngày</p>
         </StaticPage>
     );
 }

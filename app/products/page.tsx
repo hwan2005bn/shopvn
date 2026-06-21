@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
-// Thay đổi đường dẫn import Skeleton cho đúng với cấu trúc dự án của bạn
+
 import { ProductCardSkeleton } from '@/components/Skeleton';
 import { Product } from '@/types';
 import { Search } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function ProductsPage() {
 
     const category = searchParams.get('category');
 
-    // KỸ THUẬT DEBOUNCE: Đợi người dùng dừng gõ 500ms mới cập nhật từ khóa tìm kiếm thật
+
     useEffect(() => {
         const handler = setTimeout(() => {
             setDebouncedSearch(search);
@@ -27,7 +27,7 @@ export default function ProductsPage() {
         };
     }, [search]);
 
-    // Lắng nghe thay đổi của danh mục và từ khóa đã được debounce để fetch dữ liệu mới
+
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
@@ -69,21 +69,20 @@ export default function ProductsPage() {
                 />
             </div>
 
-            {/* ĐOẠN HIỂN THỊ TRẠNG THÁI */}
             {loading ? (
-                // 1. SỬ DỤNG SKELETON: Hiển thị 8 thẻ giả lập nhấp nháy khi đang tải
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {Array.from({ length: 8 }).map((_, index) => (
                         <ProductCardSkeleton key={index} />
                     ))}
                 </div>
             ) : products.length === 0 ? (
-                // 2. KHÔNG CÓ SẢN PHẨM
+
                 <div className="text-center py-12 text-gray-500 dark:text-gray-400 font-medium">
                     Không tìm thấy sản phẩm nào phù hợp
                 </div>
             ) : (
-                // 3. ĐÃ TẢI XONG: Hiển thị sản phẩm thật
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {products.map((p) => (
                         <ProductCard key={p.id} product={p} />
