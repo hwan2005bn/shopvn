@@ -41,7 +41,6 @@ const statuses = [
 export default function AdminOrdersPage() {
     const router = useRouter();
 
-    // SỬA TẠI ĐÂY: Bổ sung lấy thêm biến `isAdmin` từ useAuth() ra ngoài
     const { user, loading, isAdmin } = useAuth();
 
     const [orders, setOrders] = useState<Order[]>([]);
@@ -50,7 +49,6 @@ export default function AdminOrdersPage() {
     const [selected, setSelected] = useState<Order | null>(null);
 
     useEffect(() => {
-        // SỬA TẠI ĐÂY: Thay thế `!user.isAdmin` bằng biến `!isAdmin` chuẩn TypeScript
         if (!loading && (!user || !isAdmin) && user !== null) {
             router.push('/login');
             return;
@@ -84,7 +82,6 @@ export default function AdminOrdersPage() {
 
     if (loading) return <div className="p-8 text-center text-gray-500 dark:text-gray-400">Đang tải...</div>;
 
-    // SỬA TẠI ĐÂY: Thay thế thành `!isAdmin`
     if (!user || !isAdmin) return null;
 
     return (
