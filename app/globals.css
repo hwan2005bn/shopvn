@@ -1,6 +1,4 @@
 @import "tailwindcss";
-
-/* 1. ĐỊNH NGHĨA BIẾN MÀU CHO TAILWIND V4 CHUẨN ĐỒNG BỘ */
 @theme {
   --color-background-light: #ffffff;
   --color-foreground-light: #111111;
@@ -9,22 +7,18 @@
   --color-foreground-dark: #ffffff;
 }
 
-/* 2. THIẾT LẬP MÀU NỀN MẶC ĐỊNH (LIGHT MODE) */
 :root {
   --bg: var(--color-background-light);
   --text: var(--color-foreground-light);
 }
 
-/* 3. ĐỔI MÀU BIẾN KHI NEXT-THEMES KÍCH HOẠT CLASS .DARK */
 .dark {
   --bg: var(--color-background-dark);
   --text: var(--color-foreground-dark);
 
-  /* Ép tất cả các màu nền mặc định của Tailwind chuyển vùng tối */
   color-scheme: dark;
 }
 
-/* 4. ÉP TOÀN BỘ HỆ THỐNG HTML & BODY ĂN THEO BIẾN MÀU */
 html,
 body {
   background-color: var(--bg) !important;
@@ -32,7 +26,6 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Mẹo nhỏ: Fix các khối nền trắng cứng đầu của ứng dụng */
 .dark bg-white {
   background-color: var(--color-background-dark) !important;
 }
